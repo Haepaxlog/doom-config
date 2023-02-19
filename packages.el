@@ -52,3 +52,7 @@
 (package! haskell-mode)
 (package! lsp-haskell)
 (package! go-complete)
+(package! org-ref)
+(package! org-roam-ui)
+(package! org-fragtog)
+;;(package! eglot)
