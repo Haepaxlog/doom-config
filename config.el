@@ -35,7 +35,8 @@
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
 (tool-bar-mode -1)
-(scroll-bar-mode -1)
+;;(scroll-bar-mode -1)
+(customize-set-variable 'scroll-bar-mode nil)
 (menu-bar-mode -1)
 ;;(set-frame-font "Hack 12" nil t)
 (setq default-frame-alist '((font . "Hack 12")))
@@ -106,3 +107,16 @@
 
 (after! lsp-ui
   (setq lsp-ui-doc-enable t))
+
+
+(use-package! zig-mode
+  :hook ((zig-mode . lsp-deferred))
+  :custom (zig-format-on-save nil)
+  :config
+  (after! lsp-mode
+    (add-to-list 'lsp-language-id-configuration '(zig-mode . "zig"))
+    (lsp-register-client
+      (make-lsp-client
+        :new-connection (lsp-stdio-connection "~/zig/zls/bin/zls")
+        :major-modes '(zig-mode)
+        :server-id 'zls))))
