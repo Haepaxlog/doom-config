@@ -25,7 +25,9 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-outrun-electric)
+;;(setq doom-theme 'doom-nord)
+(setq doom-theme 'doom-wilmersdorf)
+
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -40,8 +42,17 @@
 (menu-bar-mode -1)
 ;;(set-frame-font "Hack 12" nil t)
 (setq default-frame-alist '((font . "Hack 12")))
+
+(require 'smooth-scrolling)
+(smooth-scrolling-mode 1)
+
+(beacon-mode 1)
+
+(windmove-default-keybindings 'meta)
+
 ;;(require 'smex)
 ;;(global-set-key (kbd "M-x") 'smex)
+
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
 ;; - `load!' for loading external *.el files relative to this one
@@ -75,10 +86,10 @@
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 
 ;; academic tool stuff
-(load "~/.doom.d/academic.el")
+(load "~/.config/doom/academic.el")
 
 ;; custom packages
-(load "~/.doom.d/monde.el")
+(load "~/.config/doom/monde.el")
 (global-set-key (kbd "M-o") 'monde-open-kill-ring-buffer)
 
 (defun switch-to-minibuffer ()
@@ -90,18 +101,18 @@
 
 ;;(global-set-key "\C-co" 'switch-to-minibuffer) ;; Bind to `C-c o'
 
-(after! cider
-  (set-popup-rules!
-   '(("^\\*cider-repl"
-      :side right
-      :width 50
-      :quit nil
-      :ttl nil))))
+;;(after! cider
+;;  (set-popup-rules!
+;;   '(("^\\*cider-repl"
+;;      :side right
+;;      :width 50
+;;      :quit nil
+;;      :ttl nil))))
 ;;(setq geiser-repl-skip-version-check-p 't)
 ;;(setq geiser-guile-binary "/usr/bin/guile")
 
 ;;(after! rustic
-   ;;(setq rustic-lsp-server 'rls))
+;;(setq rustic-lsp-server 'rls))
 ;;(after! lsp-rust
 ;;  (setq lsp-rust-server 'rust-analyzer))
 
@@ -116,7 +127,15 @@
   (after! lsp-mode
     (add-to-list 'lsp-language-id-configuration '(zig-mode . "zig"))
     (lsp-register-client
-      (make-lsp-client
-        :new-connection (lsp-stdio-connection "~/zig/zls/bin/zls")
-        :major-modes '(zig-mode)
-        :server-id 'zls))))
+     (make-lsp-client
+      :new-connection (lsp-stdio-connection "~/zig/zls/bin/zls")
+      :major-modes '(zig-mode)
+      :server-id 'zls))))
+
+(use-package! ellama
+  :init
+  (setopt ellama-language "German")
+  (require 'llm-ollama)
+  (setopt ellama-provider
+	  (make-llm-ollama
+	   :chat-model "llama2")))
